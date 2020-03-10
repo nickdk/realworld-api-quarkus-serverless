@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
+import java.util.UUID;
 
 @Path("/profiles")
 public class ProfilesResource {
@@ -32,7 +33,7 @@ public class ProfilesResource {
       @PathParam("username") @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
           String username,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     ProfileData profile = profilesService.getProfile(username, loggedUserId);
     return Response.ok(new ProfileResponse(profile)).status(Response.Status.OK).build();
   }
@@ -61,8 +62,8 @@ public class ProfilesResource {
     return Response.ok(new ProfileResponse(profile)).status(Response.Status.OK).build();
   }
 
-  private Long getLoggedUserId(SecurityContext securityContext) {
+  private String getLoggedUserId(SecurityContext securityContext) {
     Principal principal = securityContext.getUserPrincipal();
-    return principal != null ? Long.valueOf(principal.getName()) : null;
+    return principal != null ? principal.getName() : null;
   }
 }

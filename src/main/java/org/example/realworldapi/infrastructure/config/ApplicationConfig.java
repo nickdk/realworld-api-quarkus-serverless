@@ -1,6 +1,9 @@
 package org.example.realworldapi.infrastructure.config;
 
 import com.github.slugify.Slugify;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreOptions;
+import io.quarkus.arc.DefaultBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -13,5 +16,14 @@ public class ApplicationConfig {
   @Produces
   public Slugify slugify() {
     return new Slugify();
+  }
+
+  @Singleton
+  @Produces
+  public Firestore firestore() {
+    FirestoreOptions firestoreOptions =
+            FirestoreOptions.getDefaultInstance().toBuilder()
+                    .build();
+    return firestoreOptions.getService();
   }
 }

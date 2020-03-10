@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @RegisterForReflection
 public class CommentResponse {
 
-  private Long id;
+  private String id;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   private LocalDateTime createdAt;

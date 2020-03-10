@@ -24,4 +24,5 @@ public class ArticleData {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private ProfileData author;
+
 }

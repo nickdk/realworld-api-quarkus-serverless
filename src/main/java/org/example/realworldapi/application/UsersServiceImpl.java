@@ -13,6 +13,7 @@ import org.example.realworldapi.domain.service.UsersService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.UUID;
 
 @ApplicationScoped
 public class UsersServiceImpl implements UsersService {
@@ -36,8 +37,9 @@ public class UsersServiceImpl implements UsersService {
     checkExistingEmail(email);
 
     User user = new User();
+    user.setId(UUID.randomUUID().toString());
     user.setUsername(username);
-    user.setEmail(email.toUpperCase().trim());
+    user.setEmail(email.toLowerCase().trim());
     user.setPassword(hashProvider.hashPassword(password));
 
     User resultUser = userRepository.create(user);
@@ -47,7 +49,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   private String createToken(User user) {
-    return tokenProvider.createUserToken(user.getId().toString());
+    return tokenProvider.createUserToken(user.getId());
   }
 
   private void checkExistingUsername(String username) {
@@ -79,7 +81,7 @@ public class UsersServiceImpl implements UsersService {
 
   @Override
   @Transactional
-  public User findById(Long id) {
+  public User findById(String id) {
     return userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
   }
 
@@ -138,13 +140,13 @@ public class UsersServiceImpl implements UsersService {
     }
   }
 
-  private void checkUsername(Long selfId, String username) {
+  private void checkUsername(String selfId, String username) {
     if (userRepository.existsUsername(selfId, username)) {
       throw new UsernameAlreadyExistsException();
     }
   }
 
-  private void checkEmail(Long selfId, String email) {
+  private void checkEmail(String selfId, String email) {
     if (userRepository.existsEmail(selfId, email)) {
       throw new EmailAlreadyExistsException();
     }

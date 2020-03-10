@@ -5,18 +5,20 @@ import lombok.Setter;
 import org.example.realworldapi.domain.model.entity.Article;
 import org.example.realworldapi.domain.model.entity.User;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 public class ArticleBuilder {
 
-  private Long id;
+  private String id;
   private String slug;
   private String title;
   private String description;
   private String body;
   private User author;
 
-  public ArticleBuilder id(Long id) {
+  public ArticleBuilder id(String id) {
     this.id = id;
     return this;
   }

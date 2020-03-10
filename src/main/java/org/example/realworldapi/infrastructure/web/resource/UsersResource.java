@@ -4,10 +4,10 @@ import org.example.realworldapi.domain.model.constants.ValidationMessages;
 import org.example.realworldapi.domain.model.entity.User;
 import org.example.realworldapi.domain.model.exception.UserNotFoundException;
 import org.example.realworldapi.domain.service.UsersService;
+import org.example.realworldapi.infrastructure.web.exception.UnauthorizedException;
 import org.example.realworldapi.infrastructure.web.model.request.LoginRequest;
 import org.example.realworldapi.infrastructure.web.model.request.NewUserRequest;
 import org.example.realworldapi.infrastructure.web.model.response.UserResponse;
-import org.example.realworldapi.infrastructure.web.exception.UnauthorizedException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

@@ -191,7 +191,9 @@ public class UsersResourceIntegrationTest extends AbstractIntegrationTest {
 
     UserResponse resultUser = objectMapper.readValue(resultUserJson, UserResponse.class);
 
-    User persistedUser = transaction(() -> entityManager.find(User.class, user.getId()));
+    //TODO NDK
+//    User persistedUser = transaction(() -> entityManager.find(User.class, user.getId()));
+    User persistedUser = null;
 
     Assertions.assertEquals(resultUser.getToken(), persistedUser.getToken());
   }

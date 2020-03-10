@@ -50,7 +50,7 @@ public class ArticlesResource {
       @QueryParam("limit") int limit,
       @Context SecurityContext securityContext)
       throws JsonProcessingException {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     ArticlesData result = articlesService.findRecentArticles(loggedUserId, offset, limit);
     return Response.ok(objectMapper.writeValueAsString(new ArticlesResponse(result)))
         .status(Response.Status.OK)
@@ -68,7 +68,7 @@ public class ArticlesResource {
       @QueryParam("favorited") List<String> favorited,
       @Context SecurityContext securityContext)
       throws JsonProcessingException {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     ArticlesData result =
         articlesService.findArticles(offset, limit, loggedUserId, tags, authors, favorited);
     return Response.ok(objectMapper.writeValueAsString(new ArticlesResponse(result)))
@@ -84,7 +84,7 @@ public class ArticlesResource {
       @Valid @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
           NewArticleRequest newArticleRequest,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     ArticleData newArticleData =
         articlesService.create(
             newArticleRequest.getTitle(),
@@ -114,7 +114,7 @@ public class ArticlesResource {
       @PathParam("slug") @NotBlank String slug,
       @Valid @NotNull UpdateArticleRequest updateArticleRequest,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     ArticleData updatedArticleData =
         articlesService.update(
             slug,
@@ -132,7 +132,7 @@ public class ArticlesResource {
   public Response delete(
       @PathParam("slug") @NotBlank(message = ValidationMessages.SLUG_MUST_BE_NOT_BLANK) String slug,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     articlesService.delete(slug, loggedUserId);
     return Response.ok().build();
   }
@@ -145,7 +145,7 @@ public class ArticlesResource {
       @PathParam("slug") @NotBlank(message = ValidationMessages.SLUG_MUST_BE_NOT_BLANK) String slug,
       @Context SecurityContext securityContext)
       throws JsonProcessingException {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     List<CommentData> comments = articlesService.findCommentsBySlug(slug, loggedUserId);
     return Response.ok(objectMapper.writeValueAsString(new CommentsResponse(comments)))
         .status(Response.Status.OK)
@@ -161,7 +161,7 @@ public class ArticlesResource {
       @PathParam("slug") @NotBlank(message = ValidationMessages.SLUG_MUST_BE_NOT_BLANK) String slug,
       @Valid NewCommentRequest newCommentRequest,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     CommentData commentData =
         articlesService.createComment(slug, newCommentRequest.getBody(), loggedUserId);
     return Response.ok(new CommentResponse(commentData)).status(Response.Status.OK).build();
@@ -173,9 +173,9 @@ public class ArticlesResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response deleteComment(
       @PathParam("slug") @NotBlank(message = ValidationMessages.SLUG_MUST_BE_NOT_BLANK) String slug,
-      @PathParam("id") @NotNull(message = ValidationMessages.COMMENT_ID_MUST_BE_NOT_NULL) Long id,
+      @PathParam("id") @NotNull(message = ValidationMessages.COMMENT_ID_MUST_BE_NOT_NULL) String id,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     articlesService.deleteComment(slug, id, loggedUserId);
     return Response.ok().build();
   }
@@ -187,7 +187,7 @@ public class ArticlesResource {
   public Response favoriteArticle(
       @PathParam("slug") @NotBlank(message = ValidationMessages.SLUG_MUST_BE_NOT_BLANK) String slug,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     ArticleData articleData = articlesService.favoriteArticle(slug, loggedUserId);
     return Response.ok(new ArticleResponse(articleData)).status(Response.Status.OK).build();
   }
@@ -199,13 +199,13 @@ public class ArticlesResource {
   public Response unfavoriteArticle(
       @PathParam("slug") @NotBlank(message = ValidationMessages.SLUG_MUST_BE_NOT_BLANK) String slug,
       @Context SecurityContext securityContext) {
-    Long loggedUserId = getLoggedUserId(securityContext);
+    String loggedUserId = getLoggedUserId(securityContext);
     ArticleData articleData = articlesService.unfavoriteArticle(slug, loggedUserId);
     return Response.ok(new ArticleResponse(articleData)).status(Response.Status.OK).build();
   }
 
-  private Long getLoggedUserId(SecurityContext securityContext) {
+  private String getLoggedUserId(SecurityContext securityContext) {
     Principal principal = securityContext.getUserPrincipal();
-    return principal != null ? Long.valueOf(principal.getName()) : null;
+    return principal != null ? principal.getName() : null;
   }
 }

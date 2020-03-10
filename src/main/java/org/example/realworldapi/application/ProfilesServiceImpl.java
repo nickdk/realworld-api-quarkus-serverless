@@ -11,6 +11,7 @@ import org.example.realworldapi.domain.service.UsersService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @ApplicationScoped
 public class ProfilesServiceImpl implements ProfilesService {
@@ -26,7 +27,7 @@ public class ProfilesServiceImpl implements ProfilesService {
 
   @Override
   @Transactional
-  public ProfileData getProfile(String username, Long loggedUserId) {
+  public ProfileData getProfile(String username, String loggedUserId) {
     User existentUser = usersService.findByUsername(username);
 
     ProfileBuilder profileBuilder = new ProfileBuilder().fromUser(existentUser);
@@ -41,7 +42,7 @@ public class ProfilesServiceImpl implements ProfilesService {
 
   @Override
   @Transactional
-  public ProfileData follow(Long loggedUserId, String username) {
+  public ProfileData follow(String loggedUserId, String username) {
     User loggedUser = usersService.findById(loggedUserId);
     User userToFollow = usersService.findByUsername(username);
     usersFollowedRepository.create(getUsersFollowed(loggedUser, userToFollow));
@@ -50,7 +51,7 @@ public class ProfilesServiceImpl implements ProfilesService {
 
   @Override
   @Transactional
-  public ProfileData unfollow(Long loggedUserId, String username) {
+  public ProfileData unfollow(String loggedUserId, String username) {
     User loggedUser = usersService.findById(loggedUserId);
     User userToUnfollow = usersService.findByUsername(username);
     UsersFollowed usersFollowed =

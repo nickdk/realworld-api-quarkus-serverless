@@ -2,9 +2,11 @@ package org.example.realworldapi.domain.model.builder;
 
 import org.example.realworldapi.domain.model.entity.User;
 
+import java.util.UUID;
+
 public class UserBuilder {
 
-    private Long id;
+    private String id;
     private String username;
     private String bio;
     private String image;
@@ -12,7 +14,7 @@ public class UserBuilder {
     private String email;
     private String token;
 
-    public UserBuilder id(Long id){
+    public UserBuilder id(String id){
         this.id = id;
         return this;
     }

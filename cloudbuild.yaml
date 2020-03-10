@@ -1,0 +1,11 @@
+steps:
+
+  #build and push native image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'quarkus-build'
+    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/realworld-api-quarkus:$COMMIT_SHA', '.' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'crt-1-push'
+    args: [ 'push', 'gcr.io/$PROJECT_ID/realworld-api-quarkus:$COMMIT_SHA']
+    waitFor:
+      - "quarkus-build"

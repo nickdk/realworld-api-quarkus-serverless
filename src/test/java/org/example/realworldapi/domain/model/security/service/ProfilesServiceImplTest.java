@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,10 +35,10 @@ public class ProfilesServiceImplTest {
   public void
       givenValidUsernameAndNullForExistentUserLoggedUserId_shouldReturnProfileWithFollowingFieldFalse() {
     String username = "user1";
-    Long loggedUserId = null;
+    String loggedUserId = "cee679d7-a6de-470e-a661-a4778b7923d8";
 
     User existingUser =
-        new UserBuilder().id(1L).username(username).bio("bio").image("image").build();
+        new UserBuilder().id(UUID.randomUUID().toString()).username(username).bio("bio").image("image").build();
 
     when(usersService.findByUsername(username)).thenReturn(existingUser);
 
@@ -52,10 +54,10 @@ public class ProfilesServiceImplTest {
   public void
       givenValidUsernameAndLoggedUserIdWithFollowers_shouldReturnProfileWithFollowingFieldTrue() {
     String username = "user1";
-    Long loggedUserId = 1L;
+    String loggedUserId = "cee679d7-a6de-470e-a661-a4778b7923d8";
 
     User existingUser =
-        new UserBuilder().id(2L).username(username).bio("bio").image("image").build();
+        new UserBuilder().id(UUID.randomUUID().toString()).username(username).bio("bio").image("image").build();
 
     when(usersService.findByUsername(username)).thenReturn(existingUser);
 

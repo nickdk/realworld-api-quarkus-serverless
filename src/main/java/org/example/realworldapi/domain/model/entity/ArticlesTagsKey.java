@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,11 +12,10 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
 public class ArticlesTagsKey implements Serializable {
 
-  @ManyToOne private Article article;
-  @ManyToOne private Tag tag;
+  private Article article;
+  private Tag tag;
 
   @Override
   public boolean equals(Object o) {

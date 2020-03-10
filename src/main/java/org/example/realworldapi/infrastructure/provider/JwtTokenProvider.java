@@ -45,7 +45,7 @@ public class JwtTokenProvider implements TokenProvider {
             .withIssuer(issuer)
             .withSubject(subject)
             .withIssuedAt(new Date())
-            .withClaim(COMPLEMENTARY_SUBSCRIPTION, UUID.randomUUID().toString());
+            .withClaim(COMPLEMENTARY_SUBSCRIPTION, UUID.randomUUID().toString().toString());
 
     builder.withArrayClaim(CLAIM_ROLES, toArrayNames(Role.USER));
 

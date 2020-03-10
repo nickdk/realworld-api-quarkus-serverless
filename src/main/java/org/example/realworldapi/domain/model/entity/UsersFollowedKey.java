@@ -3,19 +3,15 @@ package org.example.realworldapi.domain.model.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
-@Embeddable
 public class UsersFollowedKey implements Serializable {
 
-  @ManyToOne private User user;
-
-  @ManyToOne private User followed;
+  private User user;
+  private User followed;
 
   @Override
   public boolean equals(Object o) {

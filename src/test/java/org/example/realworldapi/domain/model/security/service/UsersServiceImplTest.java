@@ -49,11 +49,11 @@ public class UsersServiceImplTest {
     String password = "user123";
 
     User createdUser = new User();
-    createdUser.setId(1L);
+    createdUser.setId(UUID.randomUUID().toString());
     createdUser.setUsername(username);
     createdUser.setEmail(email);
     createdUser.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-    createdUser.setToken(UUID.randomUUID().toString());
+    createdUser.setToken(UUID.randomUUID().toString().toString());
 
     when(userRepository.create(any(User.class))).thenReturn(createdUser);
     when(tokenProvider.createUserToken(createdUser.getId().toString())).thenReturn("token");
@@ -98,7 +98,7 @@ public class UsersServiceImplTest {
     String email = "user1@mail.com";
     String password = "123";
 
-    Optional<User> existingUser = Optional.of(UserUtils.create(1L, "user1", email, password));
+    Optional<User> existingUser = Optional.of(UserUtils.create(UUID.randomUUID().toString(), "user1", email, password));
 
     when(userRepository.findUserByEmail(email)).thenReturn(existingUser);
     when(hashProvider.checkPassword(password, existingUser.get().getPassword())).thenReturn(true);
@@ -137,7 +137,7 @@ public class UsersServiceImplTest {
   public void givenAPersistedUser_whenExecuteFindById_shouldRetrieveUser() {
 
     User user = UserUtils.create("User1", "user1@mail.com", "user123");
-    user.setId(1L);
+    user.setId(UUID.randomUUID().toString());
 
     Optional<User> userResponse = Optional.of(user);
 
@@ -150,8 +150,7 @@ public class UsersServiceImplTest {
 
   @Test
   public void givenANotPersistedUser_whenExecuteFindById_shouldThrowsUseNotFoundException() {
-
-    Long userId = 1L;
+    String userId = UUID.randomUUID().toString();
 
     when(userRepository.findUserById(userId)).thenReturn(Optional.empty());
 
@@ -162,7 +161,7 @@ public class UsersServiceImplTest {
   public void givenAExistentUser_whenExecuteUpdate_shouldReturnUpdatedUser() {
 
     User user =
-        new UserBuilder().id(1L).username("user1").bio("user1 bio").email("user1@mail.com").build();
+        new UserBuilder().id(UUID.randomUUID().toString()).username("user1").bio("user1 bio").email("user1@mail.com").build();
 
     when(userRepository.findUserById(user.getId())).thenReturn(Optional.of(user));
 
@@ -175,7 +174,7 @@ public class UsersServiceImplTest {
   public void givenAExistingUsername_shouldThrowsUsernameAlreadyExistsException() {
 
     User user =
-        new UserBuilder().id(1L).username("user1").bio("user1 bio").email("user1@mail.com").build();
+        new UserBuilder().id(UUID.randomUUID().toString()).username("user1").bio("user1 bio").email("user1@mail.com").build();
 
     when(userRepository.existsUsername(user.getId(), user.getUsername())).thenReturn(true);
 
@@ -186,7 +185,7 @@ public class UsersServiceImplTest {
   public void givenAExistingEmail_shouldThrowsEmailAlreadyExistsException() {
 
     User user =
-        new UserBuilder().id(1L).username("user1").bio("user1 bio").email("user1@mail.com").build();
+        new UserBuilder().id(UUID.randomUUID().toString()).username("user1").bio("user1 bio").email("user1@mail.com").build();
 
     when(userRepository.existsEmail(user.getId(), user.getEmail())).thenReturn(true);
 
@@ -197,7 +196,7 @@ public class UsersServiceImplTest {
   public void givenAExistentUser_whenExecuteFindByUsername_shouldReturnAUser() {
 
     User user =
-        new UserBuilder().id(1L).username("user1").bio("user1 bio").email("user1@mail.com").build();
+        new UserBuilder().id(UUID.randomUUID().toString()).username("user1").bio("user1 bio").email("user1@mail.com").build();
 
     Optional<User> userOptional = Optional.of(user);
 

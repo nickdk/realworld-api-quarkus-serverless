@@ -10,6 +10,7 @@ import org.example.realworldapi.infrastructure.web.validation.constraint.AtLeast
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class UpdateUserRequest {
   private String image;
   @Email private String email;
 
-  public User toUser(Long id) {
+  public User toUser(String id) {
     User user = new User();
     user.setId(id);
     user.setUsername(this.username);

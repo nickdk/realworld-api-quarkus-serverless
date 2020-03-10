@@ -3,23 +3,14 @@ package org.example.realworldapi.domain.model.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "ARTICLES_USERS")
 public class ArticlesUsers {
 
-  @EmbeddedId private ArticlesUsersKey primaryKey;
-
-  @ManyToOne
-  @JoinColumn(insertable = false, updatable = false)
+  private ArticlesUsersKey primaryKey;
   private Article article;
-
-  @ManyToOne
-  @JoinColumn(insertable = false, updatable = false)
   private User user;
 
   @Override

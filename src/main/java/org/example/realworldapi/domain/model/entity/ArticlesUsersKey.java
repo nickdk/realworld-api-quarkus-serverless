@@ -3,18 +3,15 @@ package org.example.realworldapi.domain.model.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
-@Embeddable
 public class ArticlesUsersKey implements Serializable {
 
-  @ManyToOne private Article article;
-  @ManyToOne private User user;
+  private Article article;
+  private User user;
 
   @Override
   public boolean equals(Object o) {

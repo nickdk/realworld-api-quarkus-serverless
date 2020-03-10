@@ -3,10 +3,10 @@ package org.example.realworldapi.infrastructure.web.resource;
 import org.example.realworldapi.domain.model.constants.ValidationMessages;
 import org.example.realworldapi.domain.model.entity.User;
 import org.example.realworldapi.domain.service.UsersService;
-import org.example.realworldapi.infrastructure.web.security.profile.Role;
 import org.example.realworldapi.infrastructure.web.model.request.UpdateUserRequest;
 import org.example.realworldapi.infrastructure.web.model.response.UserResponse;
 import org.example.realworldapi.infrastructure.web.security.annotation.Secured;
+import org.example.realworldapi.infrastructure.web.security.profile.Role;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.UUID;
 
 @Path("/user")
 public class UserResource {
@@ -29,7 +30,7 @@ public class UserResource {
   @Secured({Role.ADMIN, Role.USER})
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUser(@Context SecurityContext securityContext) {
-    User user = usersService.findById(Long.valueOf(securityContext.getUserPrincipal().getName()));
+    User user = usersService.findById(securityContext.getUserPrincipal().getName());
     return Response.ok(new UserResponse(user)).status(Response.Status.OK).build();
   }
 
@@ -43,7 +44,7 @@ public class UserResource {
               UpdateUserRequest updateUserRequest) {
     User updatedUser =
         usersService.update(
-            updateUserRequest.toUser(Long.valueOf(securityContext.getUserPrincipal().getName())));
+            updateUserRequest.toUser(securityContext.getUserPrincipal().getName()));
     return Response.ok(new UserResponse(updatedUser)).status(Response.Status.OK).build();
   }
 }
