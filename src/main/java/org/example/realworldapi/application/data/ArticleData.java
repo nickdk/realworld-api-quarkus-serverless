@@ -14,15 +14,15 @@ import java.util.List;
 @RegisterForReflection
 public class ArticleData {
 
-  private String slug;
-  private String title;
-  private String description;
-  private String body;
-  private List<String> tagList;
-  private boolean favorited;
-  private long favoritesCount;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
-  private ProfileData author;
+    private String slug;
+    private String title;
+    private String description;
+    private String body;
+    private List<String> tagList;
+    private boolean favorited;
+    private long favoritesCount;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private ProfileData author;
 
 }

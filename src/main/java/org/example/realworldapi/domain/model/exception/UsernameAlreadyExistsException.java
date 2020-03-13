@@ -2,7 +2,7 @@ package org.example.realworldapi.domain.model.exception;
 
 public class UsernameAlreadyExistsException extends BusinessException {
 
-    public UsernameAlreadyExistsException(){
+    public UsernameAlreadyExistsException() {
         super("username already exists");
     }
 

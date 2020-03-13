@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 @RegisterForReflection
 public class ArticlesResponse {
 
-  private List<ArticleResponse> articles;
-  private long articlesCount;
+    private List<ArticleResponse> articles;
+    private long articlesCount;
 
-  public ArticlesResponse(ArticlesData result) {
-    this.articles =
-        result.getArticles().stream().map(ArticleResponse::new).collect(Collectors.toList());
-    this.articlesCount = result.getArticlesCount();
-  }
+    public ArticlesResponse(ArticlesData result) {
+        this.articles =
+                result.getArticles().stream().map(ArticleResponse::new).collect(Collectors.toList());
+        this.articlesCount = result.getArticlesCount();
+    }
 }

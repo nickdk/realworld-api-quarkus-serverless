@@ -12,15 +12,15 @@ import org.example.realworldapi.application.data.ProfileData;
 @RegisterForReflection
 public class ProfileResponse {
 
-  private String username;
-  private String bio;
-  private String image;
-  private boolean following;
+    private String username;
+    private String bio;
+    private String image;
+    private boolean following;
 
-  public ProfileResponse(ProfileData profile) {
-    this.username = profile.getUsername();
-    this.bio = profile.getBio();
-    this.image = profile.getImage();
-    this.following = profile.isFollowing();
-  }
+    public ProfileResponse(ProfileData profile) {
+        this.username = profile.getUsername();
+        this.bio = profile.getBio();
+        this.image = profile.getImage();
+        this.following = profile.isFollowing();
+    }
 }

@@ -13,20 +13,20 @@ import javax.inject.Singleton;
 @ApplicationScoped
 public class ObjectMapperConfig {
 
-  @Singleton
-  @Produces
-  public ObjectMapper objectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-    objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
-    objectMapper.registerModule(new JavaTimeModule());
-    return objectMapper;
-  }
+    @Singleton
+    @Produces
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
+    }
 
-  @Singleton
-  @Produces
-  @NoWrapRootValueObjectMapper
-  public ObjectMapper noWrapRootValueObjectMapper() {
-    return new ObjectMapper().registerModule(new JavaTimeModule());
-  }
+    @Singleton
+    @Produces
+    @NoWrapRootValueObjectMapper
+    public ObjectMapper noWrapRootValueObjectMapper() {
+        return new ObjectMapper().registerModule(new JavaTimeModule());
+    }
 }

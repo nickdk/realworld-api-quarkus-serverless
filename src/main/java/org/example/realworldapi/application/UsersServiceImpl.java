@@ -12,143 +12,124 @@ import org.example.realworldapi.domain.service.UsersService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.Collections;
 import java.util.UUID;
 
 @ApplicationScoped
 public class UsersServiceImpl implements UsersService {
 
-  private UserRepository userRepository;
-  private TokenProvider tokenProvider;
-  private HashProvider hashProvider;
+    private UserRepository userRepository;
+    private TokenProvider tokenProvider;
+    private HashProvider hashProvider;
 
-  public UsersServiceImpl(
-      UserRepository userRepository, TokenProvider tokenProvider, HashProvider hashProvider) {
-    this.userRepository = userRepository;
-    this.tokenProvider = tokenProvider;
-    this.hashProvider = hashProvider;
-  }
-
-  @Override
-  @Transactional
-  public User create(String username, String email, String password) {
-
-    checkExistingUsername(username);
-    checkExistingEmail(email);
-
-    User user = new User();
-    user.setId(UUID.randomUUID().toString());
-    user.setUsername(username);
-    user.setEmail(email.toLowerCase().trim());
-    user.setPassword(hashProvider.hashPassword(password));
-
-    User resultUser = userRepository.create(user);
-    resultUser.setToken(createToken(resultUser));
-
-    return resultUser;
-  }
-
-  private String createToken(User user) {
-    return tokenProvider.createUserToken(user.getId());
-  }
-
-  private void checkExistingUsername(String username) {
-    if (userRepository.existsBy("username", username)) {
-      throw new UsernameAlreadyExistsException();
-    }
-  }
-
-  private void checkExistingEmail(String email) {
-    if (userRepository.existsBy("email", email)) {
-      throw new EmailAlreadyExistsException();
-    }
-  }
-
-  @Override
-  @Transactional
-  public User login(String email, String password) {
-
-    User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
-
-    if (isPasswordInvalid(password, user.getPassword())) {
-      throw new InvalidPasswordException();
+    public UsersServiceImpl(
+            UserRepository userRepository, TokenProvider tokenProvider, HashProvider hashProvider) {
+        this.userRepository = userRepository;
+        this.tokenProvider = tokenProvider;
+        this.hashProvider = hashProvider;
     }
 
-    user.setToken(createToken(user));
+    @Override
+    @Transactional
+    public User create(String username, String email, String password) {
 
-    return user;
-  }
+        checkExistingUsername(username);
+        checkExistingEmail(email);
 
-  @Override
-  @Transactional
-  public User findById(String id) {
-    return userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
-  }
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setUsername(username);
+        user.setEmail(email.toLowerCase().trim());
+        user.setPassword(hashProvider.hashPassword(password));
+        user.setFollowedBy(Collections.emptyList());
+        user.setFollowing(Collections.emptyList());
 
-  @Override
-  @Transactional
-  public User update(User user) {
+        User resultUser = userRepository.create(user);
+        resultUser.setToken(createToken(resultUser));
 
-    checkValidations(user);
-
-    Optional<User> managedUserOptional = userRepository.findUserById(user.getId());
-
-    managedUserOptional.ifPresent(
-        storedUser -> {
-          if (isPresent(user.getUsername())) {
-            storedUser.setUsername(user.getUsername());
-          }
-
-          if (isPresent(user.getEmail())) {
-            storedUser.setEmail(user.getEmail());
-          }
-
-          if (isPresent(user.getBio())) {
-            storedUser.setBio(user.getBio());
-          }
-
-          if (isPresent(user.getImage())) {
-            storedUser.setImage(user.getImage());
-          }
-        });
-
-    return managedUserOptional.orElse(null);
-  }
-
-  @Override
-  @Transactional
-  public User findByUsername(String username) {
-    return userRepository.findByUsernameOptional(username).orElseThrow(UserNotFoundException::new);
-  }
-
-  private boolean isPresent(String property) {
-    return property != null && !property.isEmpty();
-  }
-
-  private boolean isPasswordInvalid(String password, String hashedPassword) {
-    return !hashProvider.checkPassword(password, hashedPassword);
-  }
-
-  private void checkValidations(User user) {
-
-    if (isPresent(user.getUsername())) {
-      checkUsername(user.getId(), user.getUsername());
+        return resultUser;
     }
 
-    if (isPresent(user.getEmail())) {
-      checkEmail(user.getId(), user.getEmail());
+    private String createToken(User user) {
+        return tokenProvider.createUserToken(user.getId());
     }
-  }
 
-  private void checkUsername(String selfId, String username) {
-    if (userRepository.existsUsername(selfId, username)) {
-      throw new UsernameAlreadyExistsException();
+    private void checkExistingUsername(String username) {
+        if (userRepository.existsBy("username", username)) {
+            throw new UsernameAlreadyExistsException();
+        }
     }
-  }
 
-  private void checkEmail(String selfId, String email) {
-    if (userRepository.existsEmail(selfId, email)) {
-      throw new EmailAlreadyExistsException();
+    private void checkExistingEmail(String email) {
+        if (userRepository.existsBy("email", email)) {
+            throw new EmailAlreadyExistsException();
+        }
     }
-  }
+
+    @Override
+    @Transactional
+    public User login(String email, String password) {
+
+        User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        if (isPasswordInvalid(password, user.getPassword())) {
+            throw new InvalidPasswordException();
+        }
+
+        user.setToken(createToken(user));
+
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public User findById(String id) {
+        return userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    @Transactional
+    public User update(User user) {
+
+        checkValidations(user);
+
+        return userRepository.mergeUpdateableFields(user);
+    }
+
+    @Override
+    @Transactional
+    public User findByUsername(String username) {
+        return userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
+
+    private boolean isPresent(String property) {
+        return property != null && !property.isEmpty();
+    }
+
+    private boolean isPasswordInvalid(String password, String hashedPassword) {
+        return !hashProvider.checkPassword(password, hashedPassword);
+    }
+
+    private void checkValidations(User user) {
+
+        if (isPresent(user.getUsername())) {
+            checkUsername(user.getId(), user.getUsername());
+        }
+
+        if (isPresent(user.getEmail())) {
+            checkEmail(user.getId(), user.getEmail());
+        }
+    }
+
+    private void checkUsername(String selfId, String username) {
+        if (userRepository.existsUsername(selfId, username)) {
+            throw new UsernameAlreadyExistsException();
+        }
+    }
+
+    private void checkEmail(String selfId, String email) {
+        if (userRepository.existsEmail(selfId, email)) {
+            throw new EmailAlreadyExistsException();
+        }
+    }
 }

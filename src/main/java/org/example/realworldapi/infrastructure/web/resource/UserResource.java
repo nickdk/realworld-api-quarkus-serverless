@@ -15,36 +15,35 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.util.UUID;
 
 @Path("/user")
 public class UserResource {
 
-  private UsersService usersService;
+    private UsersService usersService;
 
-  public UserResource(UsersService usersService) {
-    this.usersService = usersService;
-  }
+    public UserResource(UsersService usersService) {
+        this.usersService = usersService;
+    }
 
-  @GET
-  @Secured({Role.ADMIN, Role.USER})
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response getUser(@Context SecurityContext securityContext) {
-    User user = usersService.findById(securityContext.getUserPrincipal().getName());
-    return Response.ok(new UserResponse(user)).status(Response.Status.OK).build();
-  }
+    @GET
+    @Secured({Role.ADMIN, Role.USER})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(@Context SecurityContext securityContext) {
+        User user = usersService.findById(securityContext.getUserPrincipal().getName());
+        return Response.ok(new UserResponse(user)).status(Response.Status.OK).build();
+    }
 
-  @PUT
-  @Secured({Role.USER, Role.USER})
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response update(
-      @Context SecurityContext securityContext,
-      @Valid @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
-              UpdateUserRequest updateUserRequest) {
-    User updatedUser =
-        usersService.update(
-            updateUserRequest.toUser(securityContext.getUserPrincipal().getName()));
-    return Response.ok(new UserResponse(updatedUser)).status(Response.Status.OK).build();
-  }
+    @PUT
+    @Secured({Role.USER, Role.USER})
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(
+            @Context SecurityContext securityContext,
+            @Valid @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
+                    UpdateUserRequest updateUserRequest) {
+        User updatedUser =
+                usersService.update(
+                        updateUserRequest.toUser(securityContext.getUserPrincipal().getName()));
+        return Response.ok(new UserResponse(updatedUser)).status(Response.Status.OK).build();
+    }
 }

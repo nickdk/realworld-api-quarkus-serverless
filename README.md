@@ -91,15 +91,5 @@ and database engine need to be changed.
 ./mvnw package -Pnative
 ```
 
-#### Database changes can be made to the application.properties file.
-
-```properties
-# Database configuration
-quarkus.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-quarkus.datasource.driver=org.h2.Driver
-quarkus.datasource.username=sa
-quarkus.datasource.password=
-```
-
 ## Help
 Improvements are welcome, feel free to contribute.

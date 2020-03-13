@@ -3,7 +3,6 @@ package org.example.realworldapi.domain.model.repository;
 import io.quarkus.test.junit.QuarkusTest;
 import org.example.realworldapi.DatabaseIntegrationTest;
 import org.example.realworldapi.domain.model.entity.User;
-import org.example.realworldapi.infrastructure.config.ApplicationConfig;
 import org.example.realworldapi.infrastructure.web.security.profile.Role;
 import org.example.realworldapi.util.UserUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -14,8 +13,8 @@ import javax.inject.Inject;
 @QuarkusTest
 public class UserRepositoryFirestoreTest extends DatabaseIntegrationTest {
 
-  @Inject
-  private UserRepository userRepository;
+    @Inject
+    private UserRepository userRepository;
 
 //  @BeforeEach
 //  public void beforeEach() {
@@ -26,20 +25,20 @@ public class UserRepositoryFirestoreTest extends DatabaseIntegrationTest {
 //    userRepository = new UserRepositoryFirestore(firestore);
 //  }
 
-  @AfterEach
-  public void afterEach() {
-    clear();
-  }
+    @AfterEach
+    public void afterEach() {
+        clear();
+    }
 
-  @Test
-  public void shouldCreateAnUser() {
+    @Test
+    public void shouldCreateAnUser() {
 
-    User user = UserUtils.create("user", "user@mail.com", "123");
+        User user = UserUtils.create("user", "user@mail.com", "123");
 
-    User result = userRepository.create(user);
+        User result = userRepository.create(user);
 
 //    transaction(() -> Assertions.assertNotNull(entityManager.find(User.class, result.getId())));
-  }
+    }
 
 //  @Test
 //  public void shouldReturnAUserByEmail() {
@@ -168,9 +167,9 @@ public class UserRepositoryFirestoreTest extends DatabaseIntegrationTest {
 //                userRepository.findByUsernameOptional(user.getUsername()).isPresent()));
 //  }
 
-  private User createUser(String username, String email, String password, Role... role) {
-    User user = UserUtils.create(username, email, password);
-    firestore.collection("users").document(user.getId().toString()).set(user);
-    return user;
-  }
+    private User createUser(String username, String email, String password, Role... role) {
+        User user = UserUtils.create(username, email, password);
+        firestore.collection("users").document(user.getId().toString()).set(user);
+        return user;
+    }
 }

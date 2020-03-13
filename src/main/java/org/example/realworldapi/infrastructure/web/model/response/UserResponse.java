@@ -14,17 +14,17 @@ import org.example.realworldapi.domain.model.entity.User;
 @RegisterForReflection
 public class UserResponse {
 
-  private String username;
-  private String bio;
-  private String image;
-  private String email;
-  private String token;
+    private String username;
+    private String bio;
+    private String image;
+    private String email;
+    private String token;
 
-  public UserResponse(User user) {
-    this.username = user.getUsername();
-    this.bio = user.getBio();
-    this.image = user.getImage();
-    this.email = user.getEmail();
-    this.token = user.getToken();
-  }
+    public UserResponse(User user) {
+        this.username = user.getUsername();
+        this.bio = user.getBio();
+        this.image = user.getImage();
+        this.email = user.getEmail();
+        this.token = user.getToken();
+    }
 }

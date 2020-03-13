@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Tag {
 
-  private String name;
+    private String name;
 
-  public Tag(String name) {
-    this.name = name;
-  }
+    public Tag(String name) {
+        this.name = name;
+    }
 }

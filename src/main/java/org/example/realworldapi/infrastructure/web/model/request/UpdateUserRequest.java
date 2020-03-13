@@ -10,7 +10,6 @@ import org.example.realworldapi.infrastructure.web.validation.constraint.AtLeast
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,20 +18,21 @@ import java.util.UUID;
 @RegisterForReflection
 public class UpdateUserRequest {
 
-  @Pattern(regexp = "\\A(?!\\s*\\Z).+", message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
-  private String username;
+    @Pattern(regexp = "\\A(?!\\s*\\Z).+", message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
+    private String username;
 
-  private String bio;
-  private String image;
-  @Email private String email;
+    private String bio;
+    private String image;
+    @Email
+    private String email;
 
-  public User toUser(String id) {
-    User user = new User();
-    user.setId(id);
-    user.setUsername(this.username);
-    user.setBio(this.bio);
-    user.setImage(this.image);
-    user.setEmail(this.email);
-    return user;
-  }
+    public User toUser(String id) {
+        User user = new User();
+        user.setId(id);
+        user.setUsername(this.username);
+        user.setBio(this.bio);
+        user.setImage(this.image);
+        user.setEmail(this.email);
+        return user;
+    }
 }

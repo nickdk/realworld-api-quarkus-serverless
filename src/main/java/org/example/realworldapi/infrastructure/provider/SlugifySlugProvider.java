@@ -8,14 +8,14 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class SlugifySlugProvider implements SlugProvider {
 
-  private Slugify slugify;
+    private Slugify slugify;
 
-  public SlugifySlugProvider(Slugify slugify) {
-    this.slugify = slugify;
-  }
+    public SlugifySlugProvider(Slugify slugify) {
+        this.slugify = slugify;
+    }
 
-  @Override
-  public String slugify(String text) {
-    return slugify.slugify(text);
-  }
+    @Override
+    public String slugify(String text) {
+        return slugify.slugify(text);
+    }
 }

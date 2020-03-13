@@ -15,14 +15,14 @@ import java.util.List;
 @RegisterForReflection
 public class NewArticleRequest {
 
-  @NotBlank(message = ValidationMessages.TITLE_MUST_BE_NOT_BLANK)
-  private String title;
+    @NotBlank(message = ValidationMessages.TITLE_MUST_BE_NOT_BLANK)
+    private String title;
 
-  @NotBlank(message = ValidationMessages.DESCRIPTION_MUST_BE_NOT_BLANK)
-  private String description;
+    @NotBlank(message = ValidationMessages.DESCRIPTION_MUST_BE_NOT_BLANK)
+    private String description;
 
-  @NotBlank(message = ValidationMessages.BODY_MUST_BE_NOT_BLANK)
-  private String body;
+    @NotBlank(message = ValidationMessages.BODY_MUST_BE_NOT_BLANK)
+    private String body;
 
-  private List<String> tagList;
+    private List<String> tagList;
 }

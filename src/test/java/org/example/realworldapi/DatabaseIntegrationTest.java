@@ -8,18 +8,18 @@ import java.util.Set;
 
 public class DatabaseIntegrationTest {
 
-  public static Firestore firestore;
-  private static DataSource dataSource;
-  private static Set<String> entities;
+    public static Firestore firestore;
+    private static DataSource dataSource;
+    private static Set<String> entities;
 
-  static {
-      FirestoreOptions firestoreOptions =
-              FirestoreOptions.getDefaultInstance().toBuilder()
-                      .build();
-      firestore = firestoreOptions.getService();
-  }
+    static {
+        FirestoreOptions firestoreOptions =
+                FirestoreOptions.getDefaultInstance().toBuilder()
+                        .build();
+        firestore = firestoreOptions.getService();
+    }
 
-  public void clear() {
+    public void clear() {
 //    transaction(
 //        () ->
 //            entities.forEach(
@@ -30,5 +30,5 @@ public class DatabaseIntegrationTest {
 //                                + tableName
 //                                + "; SET FOREIGN_KEY_CHECKS = 1;")
 //                        .executeUpdate()));
-  }
+    }
 }

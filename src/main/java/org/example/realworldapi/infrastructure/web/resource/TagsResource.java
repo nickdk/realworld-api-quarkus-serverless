@@ -17,21 +17,21 @@ import java.util.List;
 @Path("/tags")
 public class TagsResource {
 
-  private TagsService tagsService;
-  private ObjectMapper objectMapper;
+    private TagsService tagsService;
+    private ObjectMapper objectMapper;
 
-  public TagsResource(
-      TagsService tagsService, @NoWrapRootValueObjectMapper ObjectMapper objectMapper) {
-    this.tagsService = tagsService;
-    this.objectMapper = objectMapper;
-  }
+    public TagsResource(
+            TagsService tagsService, @NoWrapRootValueObjectMapper ObjectMapper objectMapper) {
+        this.tagsService = tagsService;
+        this.objectMapper = objectMapper;
+    }
 
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response getTags() throws JsonProcessingException {
-    List<Tag> tags = tagsService.findTags();
-    return Response.ok(objectMapper.writeValueAsString(new TagsResponse(tags)))
-        .status(Response.Status.OK)
-        .build();
-  }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTags() throws JsonProcessingException {
+        List<Tag> tags = tagsService.findTags();
+        return Response.ok(objectMapper.writeValueAsString(new TagsResponse(tags)))
+                .status(Response.Status.OK)
+                .build();
+    }
 }

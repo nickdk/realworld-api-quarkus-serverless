@@ -3,20 +3,23 @@ package org.example.realworldapi.domain.model.repository;
 import org.example.realworldapi.domain.model.entity.User;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface UserRepository {
-  User create(User user);
+    User create(User user);
 
-  Optional<User> findUserByEmail(String email);
+    Optional<User> findUserByEmail(String email);
 
-  boolean existsBy(String field, String value);
+    boolean existsBy(String field, String value);
 
-  Optional<User> findUserById(String id);
+    Optional<User> findUserById(String id);
 
-  boolean existsUsername(String excludeId, String username);
+    boolean existsUsername(String excludeId, String username);
 
-  boolean existsEmail(String excludeId, String email);
+    boolean existsEmail(String excludeId, String email);
 
-  Optional<User> findByUsernameOptional(String username);
+    Optional<User> findUserByUsername(String username);
+
+    User mergeUpdateableFields(User user);
+
+    User overwriteUser(User user);
 }

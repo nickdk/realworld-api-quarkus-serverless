@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @RegisterForReflection
 public class CommentsResponse {
 
-  private List<CommentResponse> comments;
+    private List<CommentResponse> comments;
 
-  public CommentsResponse(List<CommentData> comments) {
-    this.comments = comments.stream().map(CommentResponse::new).collect(Collectors.toList());
-  }
+    public CommentsResponse(List<CommentData> comments) {
+        this.comments = comments.stream().map(CommentResponse::new).collect(Collectors.toList());
+    }
 }

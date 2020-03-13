@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface TagRepository {
 
-  Optional<Tag> findByName(String tagName);
+    Optional<Tag> findByName(String tagName);
 
-  Tag create(Tag tag);
+    Tag create(Tag tag);
 
-  List<Tag> findAllTags();
+    List<Tag> findAllTags();
 }

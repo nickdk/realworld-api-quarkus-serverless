@@ -10,27 +10,27 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 public class ArticlesTags {
-  private ArticlesTagsKey primaryKey;
+    private ArticlesTagsKey primaryKey;
 
-  public ArticlesTags(ArticlesTagsKey primaryKey) {
-    this.primaryKey = primaryKey;
-  }
+    public ArticlesTags(ArticlesTagsKey primaryKey) {
+        this.primaryKey = primaryKey;
+    }
 
-  private Article article;
-  private Tag tag;
+    private Article article;
+    private Tag tag;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
 
-    if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    ArticlesTags that = (ArticlesTags) o;
-    return Objects.equals(primaryKey, that.primaryKey);
-  }
+        ArticlesTags that = (ArticlesTags) o;
+        return Objects.equals(primaryKey, that.primaryKey);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(primaryKey);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(primaryKey);
+    }
 }

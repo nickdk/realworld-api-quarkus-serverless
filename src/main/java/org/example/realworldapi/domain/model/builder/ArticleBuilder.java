@@ -5,61 +5,59 @@ import lombok.Setter;
 import org.example.realworldapi.domain.model.entity.Article;
 import org.example.realworldapi.domain.model.entity.User;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 public class ArticleBuilder {
 
-  private String id;
-  private String slug;
-  private String title;
-  private String description;
-  private String body;
-  private User author;
+    private String id;
+    private String slug;
+    private String title;
+    private String description;
+    private String body;
+    private User author;
 
-  public ArticleBuilder id(String id) {
-    this.id = id;
-    return this;
-  }
+    public ArticleBuilder id(String id) {
+        this.id = id;
+        return this;
+    }
 
-  public ArticleBuilder slug(String slug) {
-    this.slug = slug;
-    return this;
-  }
+    public ArticleBuilder slug(String slug) {
+        this.slug = slug;
+        return this;
+    }
 
-  public ArticleBuilder title(String title) {
-    this.title = title;
-    return this;
-  }
+    public ArticleBuilder title(String title) {
+        this.title = title;
+        return this;
+    }
 
-  public ArticleBuilder description(String description) {
-    this.description = description;
-    return this;
-  }
+    public ArticleBuilder description(String description) {
+        this.description = description;
+        return this;
+    }
 
-  public ArticleBuilder body(String body) {
-    this.body = body;
-    return this;
-  }
+    public ArticleBuilder body(String body) {
+        this.body = body;
+        return this;
+    }
 
-  public ArticleBuilder author(User author) {
-    this.author = author;
-    return this;
-  }
+    public ArticleBuilder author(User author) {
+        this.author = author;
+        return this;
+    }
 
-  public Article build() {
-    return new Article(
-        this.id,
-        this.slug,
-        this.title,
-        this.description,
-        this.body,
-        null,
-        null,
-        this.author,
-        null,
-        null,
-        null);
-  }
+    public Article build() {
+        return new Article(
+                this.id,
+                this.slug,
+                this.title,
+                this.description,
+                this.body,
+                null,
+                null,
+                this.author,
+                null,
+                null,
+                null);
+    }
 }

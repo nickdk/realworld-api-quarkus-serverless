@@ -18,22 +18,22 @@ import java.time.LocalDateTime;
 @RegisterForReflection
 public class CommentResponse {
 
-  private String id;
+    private String id;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime createdAt;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-  private LocalDateTime updatedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime updatedAt;
 
-  private String body;
-  private ProfileData author;
+    private String body;
+    private ProfileData author;
 
-  public CommentResponse(CommentData commentData) {
-    this.id = commentData.getId();
-    this.createdAt = commentData.getCreatedAt();
-    this.updatedAt = commentData.getUpdatedAt();
-    this.body = commentData.getBody();
-    this.author = commentData.getAuthor();
-  }
+    public CommentResponse(CommentData commentData) {
+        this.id = commentData.getId();
+        this.createdAt = commentData.getCreatedAt();
+        this.updatedAt = commentData.getUpdatedAt();
+        this.body = commentData.getBody();
+        this.author = commentData.getAuthor();
+    }
 }

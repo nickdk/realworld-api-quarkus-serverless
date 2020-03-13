@@ -15,13 +15,13 @@ import javax.validation.constraints.NotBlank;
 @RegisterForReflection
 public class NewUserRequest {
 
-  @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
-  private String username;
+    @NotBlank(message = ValidationMessages.USERNAME_MUST_BE_NOT_BLANK)
+    private String username;
 
-  @Email
-  @NotBlank(message = ValidationMessages.EMAIL_MUST_BE_NOT_BLANK)
-  private String email;
+    @Email
+    @NotBlank(message = ValidationMessages.EMAIL_MUST_BE_NOT_BLANK)
+    private String email;
 
-  @NotBlank(message = ValidationMessages.PASSWORD_MUST_BE_NOT_BLANK)
-  private String password;
+    @NotBlank(message = ValidationMessages.PASSWORD_MUST_BE_NOT_BLANK)
+    private String password;
 }

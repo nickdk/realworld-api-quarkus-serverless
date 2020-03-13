@@ -11,22 +11,15 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
 
-  private String id;
+    private String id;
 
-  private String username;
-  private String bio;
-  private String image;
-  private String password;
-  private String email;
-  private String token;
-  private List<Article> articles;
-  private List<UsersFollowed> following;
-  private List<UsersFollowed> followedBy;
-
-  public User(String id, String username, String bio, String image) {
-    this.id = id;
-    this.username = username;
-    this.bio = bio;
-    this.image = image;
-  }
+    private String username;
+    private String bio;
+    private String image;
+    private String password;
+    private String email;
+    private String token;
+    private List<Article> articles;
+    private List<String> following;
+    private List<String> followedBy;
 }

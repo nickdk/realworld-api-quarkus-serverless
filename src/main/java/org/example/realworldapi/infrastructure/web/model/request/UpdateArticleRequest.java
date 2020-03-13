@@ -15,9 +15,9 @@ import org.example.realworldapi.infrastructure.web.validation.constraint.AtLeast
 @RegisterForReflection
 public class UpdateArticleRequest {
 
-  private String title;
+    private String title;
 
-  private String description;
+    private String description;
 
-  private String body;
+    private String body;
 }

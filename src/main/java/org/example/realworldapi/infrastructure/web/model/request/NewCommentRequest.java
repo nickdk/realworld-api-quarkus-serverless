@@ -13,6 +13,6 @@ import javax.validation.constraints.NotBlank;
 @JsonRootName("comment")
 @RegisterForReflection
 public class NewCommentRequest {
-  @NotBlank(message = ValidationMessages.BODY_MUST_BE_NOT_BLANK)
-  private String body;
+    @NotBlank(message = ValidationMessages.BODY_MUST_BE_NOT_BLANK)
+    private String body;
 }

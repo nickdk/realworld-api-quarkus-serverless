@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProfileData {
 
-  private String username;
-  private String bio;
-  private String image;
-  private boolean following;
+    private String username;
+    private String bio;
+    private String image;
+    private boolean following;
 }

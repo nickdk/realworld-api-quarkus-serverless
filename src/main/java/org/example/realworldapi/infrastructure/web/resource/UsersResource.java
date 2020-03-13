@@ -22,38 +22,38 @@ import javax.ws.rs.core.Response;
 @Path("/users")
 public class UsersResource {
 
-  private UsersService usersService;
+    private UsersService usersService;
 
-  UsersResource(UsersService usersService) {
-    this.usersService = usersService;
-  }
-
-  @POST
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response create(
-      @Valid @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
-              NewUserRequest newUserRequest,
-      @Context SecurityException context) {
-    User createdUser =
-        usersService.create(
-            newUserRequest.getUsername(), newUserRequest.getEmail(), newUserRequest.getPassword());
-    return Response.ok(new UserResponse(createdUser)).status(Response.Status.CREATED).build();
-  }
-
-  @POST
-  @Path("/login")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response login(
-      @Valid @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
-              LoginRequest loginRequest) {
-    User existingUser;
-    try {
-      existingUser = usersService.login(loginRequest.getEmail(), loginRequest.getPassword());
-    } catch (UserNotFoundException ex) {
-      throw new UnauthorizedException();
+    UsersResource(UsersService usersService) {
+        this.usersService = usersService;
     }
-    return Response.ok(new UserResponse(existingUser)).status(Response.Status.OK).build();
-  }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(
+            @Valid @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
+                    NewUserRequest newUserRequest,
+            @Context SecurityException context) {
+        User createdUser =
+                usersService.create(
+                        newUserRequest.getUsername(), newUserRequest.getEmail(), newUserRequest.getPassword());
+        return Response.ok(new UserResponse(createdUser)).status(Response.Status.CREATED).build();
+    }
+
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(
+            @Valid @NotNull(message = ValidationMessages.REQUEST_BODY_MUST_BE_NOT_NULL)
+                    LoginRequest loginRequest) {
+        User existingUser;
+        try {
+            existingUser = usersService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        } catch (UserNotFoundException ex) {
+            throw new UnauthorizedException();
+        }
+        return Response.ok(new UserResponse(existingUser)).status(Response.Status.OK).build();
+    }
 }

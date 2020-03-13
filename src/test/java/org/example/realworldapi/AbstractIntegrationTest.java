@@ -125,7 +125,6 @@ public class AbstractIntegrationTest extends DatabaseIntegrationTest {
     protected Comment createComment(User author, Article article, String body) {
         Comment comment = new Comment();
         comment.setBody(body);
-        comment.setArticle(article);
         comment.setAuthor(author);
         //TODO NDK persist
         return comment;

@@ -10,21 +10,21 @@ import java.util.Objects;
 @Setter
 public class ArticlesUsersKey implements Serializable {
 
-  private Article article;
-  private User user;
+    private Article article;
+    private User user;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
 
-    if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    ArticlesUsersKey that = (ArticlesUsersKey) o;
-    return Objects.equals(user, that.user) && Objects.equals(article, that.article);
-  }
+        ArticlesUsersKey that = (ArticlesUsersKey) o;
+        return Objects.equals(user, that.user) && Objects.equals(article, that.article);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(user, article);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, article);
+    }
 }

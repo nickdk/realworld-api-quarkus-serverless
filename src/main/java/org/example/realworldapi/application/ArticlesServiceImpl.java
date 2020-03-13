@@ -1,16 +1,15 @@
 package org.example.realworldapi.application;
 
+import com.google.cloud.Timestamp;
 import org.example.realworldapi.application.data.ArticleData;
 import org.example.realworldapi.application.data.ArticlesData;
 import org.example.realworldapi.application.data.CommentData;
 import org.example.realworldapi.application.data.ProfileData;
 import org.example.realworldapi.domain.model.entity.*;
 import org.example.realworldapi.domain.model.exception.ArticleNotFoundException;
-import org.example.realworldapi.domain.model.exception.CommentNotFoundException;
 import org.example.realworldapi.domain.model.exception.UserNotFoundException;
 import org.example.realworldapi.domain.model.provider.SlugProvider;
 import org.example.realworldapi.domain.model.repository.ArticleRepository;
-import org.example.realworldapi.domain.model.repository.CommentRepository;
 import org.example.realworldapi.domain.model.repository.TagRepository;
 import org.example.realworldapi.domain.model.repository.UserRepository;
 import org.example.realworldapi.domain.service.ArticlesService;
@@ -33,7 +32,6 @@ public class ArticlesServiceImpl implements ArticlesService {
 
     private UserRepository userRepository;
     private TagRepository tagRepository;
-    private CommentRepository commentRepository;
     private ArticleRepository articleRepository;
     private ProfilesService profilesService;
     private SlugProvider slugProvider;
@@ -42,13 +40,11 @@ public class ArticlesServiceImpl implements ArticlesService {
             UserRepository userRepository,
             TagRepository tagRepository,
             ArticleRepository articleRepository,
-            CommentRepository commentRepository,
             ProfilesService profilesService,
             SlugProvider slugProvider) {
         this.userRepository = userRepository;
         this.tagRepository = tagRepository;
         this.articleRepository = articleRepository;
-        this.commentRepository = commentRepository;
         this.profilesService = profilesService;
         this.slugProvider = slugProvider;
     }
@@ -135,8 +131,7 @@ public class ArticlesServiceImpl implements ArticlesService {
     @Transactional
     public List<CommentData> findCommentsBySlug(String slug, String loggedUserId) {
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
-        List<Comment> comments = commentRepository.findArticleComments(article.getId());
-        return comments.stream()
+        return article.getComments().stream()
                 .map(
                         comment -> {
                             ProfileData author;
@@ -154,9 +149,12 @@ public class ArticlesServiceImpl implements ArticlesService {
     @Transactional
     public CommentData createComment(String slug, String body, String commentAuthorId) {
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
-        User author =
-                userRepository.findUserById(commentAuthorId).orElseThrow(UserNotFoundException::new);
+        User author = userRepository.findUserById(commentAuthorId).orElseThrow(UserNotFoundException::new);
         Comment comment = createComment(body, article, author);
+
+        article.getComments().add(comment);
+        articleRepository.update(article);
+
         ProfileData authorProfile = profilesService.getProfile(author.getUsername(), author.getId());
         return getComment(comment, authorProfile);
     }
@@ -164,11 +162,9 @@ public class ArticlesServiceImpl implements ArticlesService {
     @Override
     @Transactional
     public void deleteComment(String slug, String commentId, String loggedUserId) {
-        Comment comment =
-                commentRepository
-                        .findComment(slug, commentId, loggedUserId)
-                        .orElseThrow(CommentNotFoundException::new);
-        commentRepository.remove(comment);
+        Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
+        article.getComments().removeIf(comment -> comment.getId().equals(commentId));
+        articleRepository.update(article);
     }
 
     @Override
@@ -176,7 +172,7 @@ public class ArticlesServiceImpl implements ArticlesService {
     public ArticleData favoriteArticle(String slug, String loggedUserId) {
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
 
-        if(!article.getFavorites().contains(loggedUserId)) {
+        if (!article.getFavorites().contains(loggedUserId)) {
             article.getFavorites().add(loggedUserId);
             return getArticle(articleRepository.update(article), loggedUserId);
         }
@@ -188,7 +184,7 @@ public class ArticlesServiceImpl implements ArticlesService {
     public ArticleData unfavoriteArticle(String slug, String loggedUserId) {
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
 
-        if(article.getFavorites().contains(loggedUserId)) {
+        if (article.getFavorites().contains(loggedUserId)) {
             article.getFavorites().remove(loggedUserId);
             return getArticle(articleRepository.update(article), loggedUserId);
         }
@@ -198,17 +194,22 @@ public class ArticlesServiceImpl implements ArticlesService {
 
     private Comment createComment(String body, Article article, User author) {
         Comment comment = new Comment();
-        comment.setArticle(article);
+        comment.setId(UUID.randomUUID().toString());
         comment.setAuthor(author);
         comment.setBody(body);
-        return commentRepository.create(comment);
+
+        //@ServerTimestamp is currently not supported by the Firestore sdk in arrays
+        Timestamp now = Timestamp.now();
+        comment.setCreatedAt(now);
+        comment.setUpdatedAt(now);
+        return comment;
     }
 
     private CommentData getComment(Comment comment, ProfileData authorProfile) {
         return new CommentData(
                 comment.getId(),
-                comment.getCreatedAt(),
-                comment.getUpdatedAt(),
+                LocalDateTime.ofInstant(comment.getCreatedAt().toDate().toInstant(), ZoneId.systemDefault()),
+                LocalDateTime.ofInstant(comment.getUpdatedAt().toDate().toInstant(), ZoneId.systemDefault()),
                 comment.getBody(),
                 authorProfile);
     }
@@ -226,6 +227,7 @@ public class ArticlesServiceImpl implements ArticlesService {
         article.setBody(body);
         article.setTagList(tagList);
         article.setFavorites(Collections.emptyList());
+        article.setComments(Collections.emptyList());
         article.setAuthor(userRepository.findUserById(userId).orElseThrow(UserNotFoundException::new));
         return articleRepository.create(article);
     }
@@ -243,7 +245,7 @@ public class ArticlesServiceImpl implements ArticlesService {
                 tagName -> {
                     Optional<Tag> tagOptional = tagRepository.findByName(tagName);
 
-                   tagOptional.orElseGet(() -> createTag(tagName));
+                    tagOptional.orElseGet(() -> createTag(tagName));
                 });
     }
 

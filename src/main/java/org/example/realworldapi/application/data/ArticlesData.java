@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticlesData {
-  private List<ArticleData> articles;
-  private long articlesCount;
+    private List<ArticleData> articles;
+    private long articlesCount;
 }

@@ -11,15 +11,15 @@ import java.util.List;
 @ApplicationScoped
 public class TagsServiceImpl implements TagsService {
 
-  private TagRepository tagRepository;
+    private TagRepository tagRepository;
 
-  public TagsServiceImpl(TagRepository tagRepository) {
-    this.tagRepository = tagRepository;
-  }
+    public TagsServiceImpl(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
 
-  @Override
-  @Transactional
-  public List<Tag> findTags() {
-    return tagRepository.findAllTags();
-  }
+    @Override
+    @Transactional
+    public List<Tag> findTags() {
+        return tagRepository.findAllTags();
+    }
 }

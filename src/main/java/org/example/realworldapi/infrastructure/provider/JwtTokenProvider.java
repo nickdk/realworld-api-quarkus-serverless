@@ -18,69 +18,69 @@ import java.util.UUID;
 @ApplicationScoped
 public class JwtTokenProvider implements TokenProvider {
 
-  public final String COMPLEMENTARY_SUBSCRIPTION = "complementary-subscription";
-  public final String CLAIM_ROLES = "ROLES";
-  private Algorithm algorithm;
-  private JWTVerifier jwtVerifier;
-  private String issuer;
-  private Integer expirationTimeInMinutes;
+    public final String COMPLEMENTARY_SUBSCRIPTION = "complementary-subscription";
+    public final String CLAIM_ROLES = "ROLES";
+    private Algorithm algorithm;
+    private JWTVerifier jwtVerifier;
+    private String issuer;
+    private Integer expirationTimeInMinutes;
 
-  public JwtTokenProvider(
-      @ConfigProperty(name = "jwt.issuer") String issuer,
-      @ConfigProperty(name = "jwt.secret") String secret,
-      @ConfigProperty(name = "jwt.expiration.time.minutes") Integer expirationTimeInMinutes) {
+    public JwtTokenProvider(
+            @ConfigProperty(name = "jwt.issuer") String issuer,
+            @ConfigProperty(name = "jwt.secret") String secret,
+            @ConfigProperty(name = "jwt.expiration.time.minutes") Integer expirationTimeInMinutes) {
 
-    this.issuer = issuer;
-    this.algorithm = Algorithm.HMAC512(secret);
-    this.jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
-    this.expirationTimeInMinutes = expirationTimeInMinutes;
-  }
-
-  @Override
-  public String createUserToken(String subject) {
-    JWTCreator.Builder builder;
-
-    builder =
-        JWT.create()
-            .withIssuer(issuer)
-            .withSubject(subject)
-            .withIssuedAt(new Date())
-            .withClaim(COMPLEMENTARY_SUBSCRIPTION, UUID.randomUUID().toString().toString());
-
-    builder.withArrayClaim(CLAIM_ROLES, toArrayNames(Role.USER));
-
-    if (expirationTimeInMinutes != null) {
-      builder.withExpiresAt(plusMinutes(expirationTimeInMinutes));
+        this.issuer = issuer;
+        this.algorithm = Algorithm.HMAC512(secret);
+        this.jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
+        this.expirationTimeInMinutes = expirationTimeInMinutes;
     }
 
-    return builder.sign(algorithm);
-  }
+    @Override
+    public String createUserToken(String subject) {
+        JWTCreator.Builder builder;
 
-  @Override
-  public DecodedJWT verify(String token) {
-    return jwtVerifier.verify(token);
-  }
+        builder =
+                JWT.create()
+                        .withIssuer(issuer)
+                        .withSubject(subject)
+                        .withIssuedAt(new Date())
+                        .withClaim(COMPLEMENTARY_SUBSCRIPTION, UUID.randomUUID().toString().toString());
 
-  @Override
-  public Role[] extractRoles(DecodedJWT decodedJWT) {
-    Claim claim = decodedJWT.getClaim(CLAIM_ROLES);
-    return claim.asArray(Role.class);
-  }
+        builder.withArrayClaim(CLAIM_ROLES, toArrayNames(Role.USER));
 
-  private static String[] toArrayNames(Role... allowedRoles) {
+        if (expirationTimeInMinutes != null) {
+            builder.withExpiresAt(plusMinutes(expirationTimeInMinutes));
+        }
 
-    String[] names = new String[allowedRoles.length];
-
-    for (int nameIndex = 0; nameIndex < allowedRoles.length; nameIndex++) {
-      names[nameIndex] = allowedRoles[nameIndex].name();
+        return builder.sign(algorithm);
     }
 
-    return names;
-  }
+    @Override
+    public DecodedJWT verify(String token) {
+        return jwtVerifier.verify(token);
+    }
 
-  private static Date plusMinutes(int minutes) {
-    int oneMinuteInMillis = 60000;
-    Calendar calendar = Calendar.getInstance();
-    return new Date(calendar.getTimeInMillis() + (minutes * oneMinuteInMillis));
-  }
+    @Override
+    public Role[] extractRoles(DecodedJWT decodedJWT) {
+        Claim claim = decodedJWT.getClaim(CLAIM_ROLES);
+        return claim.asArray(Role.class);
+    }
+
+    private static String[] toArrayNames(Role... allowedRoles) {
+
+        String[] names = new String[allowedRoles.length];
+
+        for (int nameIndex = 0; nameIndex < allowedRoles.length; nameIndex++) {
+            names[nameIndex] = allowedRoles[nameIndex].name();
+        }
+
+        return names;
+    }
+
+    private static Date plusMinutes(int minutes) {
+        int oneMinuteInMillis = 60000;
+        Calendar calendar = Calendar.getInstance();
+        return new Date(calendar.getTimeInMillis() + (minutes * oneMinuteInMillis));
+    }
 }
