@@ -21,5 +21,7 @@ public interface UserRepository {
 
     User mergeUpdateableFields(User user);
 
+    User mergeUpdateableFieldsIncludingPassword(User user);
+
     User overwriteUser(User user);
 }

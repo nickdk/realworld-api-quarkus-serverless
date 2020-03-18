@@ -60,6 +60,12 @@ public class UsersServiceImpl implements UsersService {
         }
     }
 
+    private void checkUsername(String selfId, String username) {
+        if (userRepository.existsUsername(selfId, username)) {
+            throw new UsernameAlreadyExistsException();
+        }
+    }
+
     private void checkExistingEmail(String email) {
         if (userRepository.existsBy("email", email)) {
             throw new EmailAlreadyExistsException();
@@ -84,7 +90,10 @@ public class UsersServiceImpl implements UsersService {
     @Override
     @Transactional
     public User findById(String id) {
-        return userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findUserById(id).orElseThrow(UserNotFoundException::new);
+        user.setToken(createToken(user));
+        return user;
+
     }
 
     @Override
@@ -93,7 +102,13 @@ public class UsersServiceImpl implements UsersService {
 
         checkValidations(user);
 
-        return userRepository.mergeUpdateableFields(user);
+        if(user.getPassword() != null) {
+            //User changed his pass, set hashed value
+            user.setPassword(hashProvider.hashPassword(user.getPassword()));
+            return userRepository.mergeUpdateableFieldsIncludingPassword(user);
+        } else {
+            return userRepository.mergeUpdateableFields(user);
+        }
     }
 
     @Override
@@ -118,12 +133,6 @@ public class UsersServiceImpl implements UsersService {
 
         if (isPresent(user.getEmail())) {
             checkEmail(user.getId(), user.getEmail());
-        }
-    }
-
-    private void checkUsername(String selfId, String username) {
-        if (userRepository.existsUsername(selfId, username)) {
-            throw new UsernameAlreadyExistsException();
         }
     }
 

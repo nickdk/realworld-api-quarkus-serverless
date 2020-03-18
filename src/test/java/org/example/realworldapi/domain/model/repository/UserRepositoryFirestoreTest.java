@@ -169,7 +169,7 @@ public class UserRepositoryFirestoreTest extends DatabaseIntegrationTest {
 
     private User createUser(String username, String email, String password, Role... role) {
         User user = UserUtils.create(username, email, password);
-        firestore.collection("users").document(user.getId().toString()).set(user);
+        firestore.collection("users").document(user.getId()).set(user);
         return user;
     }
 }

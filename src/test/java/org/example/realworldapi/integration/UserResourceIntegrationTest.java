@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.MediaType;
 
+import java.util.UUID;
+
 import static io.restassured.RestAssured.given;
 import static org.example.realworldapi.constants.TestConstants.*;
 import static org.hamcrest.Matchers.*;
@@ -89,8 +91,7 @@ public class UserResourceIntegrationTest extends AbstractIntegrationTest {
         String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + user.getToken();
 
         UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        updateUserRequest.setUsername("user2");
-        updateUserRequest.setEmail(user.getEmail());
+        updateUserRequest.setBio("This is my new bio");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +112,7 @@ public class UserResourceIntegrationTest extends AbstractIntegrationTest {
                         "user.token",
                         Matchers.notNullValue(),
                         "user.bio",
-                        is(user.getBio()),
+                        is(updateUserRequest.getBio()),
                         "user.image",
                         is(user.getImage()));
     }
@@ -165,7 +166,7 @@ public class UserResourceIntegrationTest extends AbstractIntegrationTest {
 
         User otherUser = createUser("user", "user@mail.com", "bio", "image", "123");
 
-        User currentUser = createUser("currentUser", "current@mail.com", "bio", "image", "123");
+        User currentUser = createUser("currentUser-" + UUID.randomUUID(), "current@mail.com", "bio", "image", "123");
 
         String authorizationHeader = AUTHORIZATION_HEADER_VALUE_PREFIX + currentUser.getToken();
 

@@ -56,7 +56,7 @@ public class UserRepositoryFirestore implements UserRepository {
     @SneakyThrows
     public boolean existsUsername(String excludeId, String username) {
         Query query = firestore.collection("users").whereEqualTo("username", username);
-        return query.get().get().toObjects(User.class).stream().anyMatch(user -> !user.getId().equals(excludeId));
+        return query.get().get().toObjects(User.class).stream().anyMatch(user -> !excludeId.equals(user.getId()));
     }
 
     @Override
@@ -76,7 +76,16 @@ public class UserRepositoryFirestore implements UserRepository {
     @Override
     @SneakyThrows
     public User mergeUpdateableFields(User user) {
-        firestore.collection("users").document(user.getId()).set(user, SetOptions.mergeFields("bio", "email")).get();
+        firestore.collection("users").document(user.getId()).set(user, SetOptions.mergeFields("image", "username", "bio", "email")).get();
+        LOGGER.debug(String.format("Updated user with id %s", user.getId()));
+        return user;
+    }
+
+
+    @Override
+    @SneakyThrows
+    public User mergeUpdateableFieldsIncludingPassword(User user) {
+        firestore.collection("users").document(user.getId()).set(user, SetOptions.mergeFields("image", "username", "bio", "email", "password")).get();
         LOGGER.debug(String.format("Updated user with id %s", user.getId()));
         return user;
     }

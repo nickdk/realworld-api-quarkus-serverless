@@ -29,8 +29,8 @@ public class AbstractIntegrationTest extends DatabaseIntegrationTest {
     protected User createUser(
             String username, String email, String bio, String image, String password) {
         User user = UserUtils.create(username, email, password, bio, image);
-        //TODO NDK persist
-        user.setToken(tokenProvider.createUserToken(user.getId().toString()));
+        firestore.collection("users").document(user.getId()).set(user);
+        user.setToken(tokenProvider.createUserToken(user.getId()));
         return user;
     }
 

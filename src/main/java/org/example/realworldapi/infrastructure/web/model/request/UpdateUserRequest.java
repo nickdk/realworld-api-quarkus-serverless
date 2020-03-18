@@ -25,6 +25,7 @@ public class UpdateUserRequest {
     private String image;
     @Email
     private String email;
+    private String password;
 
     public User toUser(String id) {
         User user = new User();
@@ -33,6 +34,7 @@ public class UpdateUserRequest {
         user.setBio(this.bio);
         user.setImage(this.image);
         user.setEmail(this.email);
+        user.setPassword(this.password);
         return user;
     }
 }

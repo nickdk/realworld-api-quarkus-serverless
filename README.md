@@ -1,24 +1,28 @@
-# ![RealWorld Example App](quarkus-logo.png)
+# ![RealWorld Example App](quarkus-gcp-logo.png)
 
-> ### Quarkus Framework codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+> ### Quarkus Framework running fully serverless on Google Cloud Platform (Cloud Run and Firestore) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
 This codebase was created to demonstrate a fully fledged fullstack application built with [Quarkus](https://quarkus.io/) including CRUD operations, authentication, routing, pagination, and more.
 
-We've gone to great lengths to adhere to the Quarkus community styleguides & best practices.
+This was forked from https://github.com/diegocamara/realworld-api-quarkus and refactored to work fully serverless on GCPs Cloud Run and Firestore.
 
 For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
 
-[![Build Status](https://travis-ci.org/diegocamara/realworld-api-quarkus.svg?branch=master)](https://travis-ci.org/diegocamara/realworld-api-quarkus)
+#TODO NDK travis build??
+
+[![Build Status](https://travis-ci.org/nickdk/realworld-api-quarkus.svg?branch=master)](https://travis-ci.org/nickdk/realworld-api-quarkus)
 
 # How it works
 
-This application basicaly uses Quarkus Framework with Java 8 with some other modules known to development community:
+This application uses Quarkus Framework with some other modules:
 
-* Hibernate 5
 * Jackson for JSON
-* H2 in memory database
-* JPA Criteria
 * Auth0 java-jwt
+
+On top of these modules it uses officially provided GCP libraries to integrate with and be built on-top of:
+
+* [Cloud Run](https://cloud.google.com/run/docs)
+* [Cloud Firestore](https://cloud.google.com/firestore/docs)
 
 ### Project structure:
 ```
